@@ -3,13 +3,6 @@
     "version": "1.0.0",
     "description": "CORE19-03_quiz_cmd",
     "main": "main.js",
-    "scripts": {
-        "start": "node main.js",
-        "upload": "node scripts/launcher.js upload",
-        "checks": "node scripts/launcher.js",
-        "uglify": "npx webpack",
-        "run-comp": "bytenode dist/launcher.jsc"
-    },
     "private": true,
     "keywords": [
         "CORE"
