@@ -1,30 +1,10 @@
-/**
- * Checker for cmd-iterators assignment
- */
-
 // IMPORTS
-const should = require('chai').should();
 const path = require('path');
-const fs = require('fs-extra');
-const exec = require("child_process").exec;
 const Utils = require('./testutils');
 
 const path_assignment = path.resolve(path.join(__dirname, "../", "mod2_cmd_iterators.js"));
-
 // CRITICAL ERRORS
 let error_critical = null;
-
-// HELPERS
-const timeout = ms => new Promise(res => setTimeout(res, ms));
-
-function to(promise) {
-    return promise
-        .then(data => {
-            return [null, data];
-        })
-        .catch(err => [err]);
-};
-
 
 //TESTS
 describe("Learning Iterators", function () {
@@ -33,11 +13,11 @@ describe("Learning Iterators", function () {
         this.score = 1;
         this.msg_ok = `The file 'mod2_cmd_iterators.js' has been found`;
         this.msg_err = `The file '${path_assignment}' has NOT been found`;
-        const [error_path, path_ok] = await to(fs.pathExists(path_assignment));
-        if (error_path) {
+        const fileexists = await Utils.checkFileExists(path_assignment);
+        if (!fileexists) {
             error_critical = this.msg_err;
         }
-        path_ok.should.be.equal(true);
+        fileexists.should.be.equal(true);
     });
 
     it('', async function () { this.name = `2: Checking that the command 'mod2_cmd_iterators.js' detects input arguments`;
@@ -49,14 +29,12 @@ describe("Learning Iterators", function () {
             this.msg_ok = "Obtained the expected output";
             this.input = "one";
             this.expected = "one: 1";
-            this.output = "";
-            [error_run, this.output] = await to(new Promise((resolve, reject) => {
-                exec(`node ${path_assignment} ${this.input}`, (err, stdout) =>
-                    err ? reject(err) : resolve(stdout))
-            }));
-            if (error_run) {
-                this.msg_err = `Error executing 'mod2_cmd_iterators.js', Received: ${error_run}`;
-                should.not.exist(error_run);
+            const { stdout, stderr } = await exec(`node ${path_assignment} ${this.input}`);
+            this.output = stdout;
+
+            if (stderr) {
+                this.msg_err = `Error executing 'mod2_cmd_iterators.js', Received: ${stderr}`;
+                should.not.exist(stderr);
             } else {
                 this.msg_err = `The expected output has NOT been obtained.\n\t\tInput: ${this.input}\n\t\tExpected: ${this.expected}\n\t\tReceived: ${this.output.trim()}`;
                 Utils.search(this.expected, this.output).should.be.equal(true);
@@ -73,14 +51,11 @@ describe("Learning Iterators", function () {
             this.msg_ok = "Obtained the expected output";
             this.input = "one one";
             this.expected = "one: 2";
-            this.output = "";
-            [error_run, this.output] = await to(new Promise((resolve, reject) => {
-                exec(`node ${path_assignment} ${this.input}`, (err, stdout) =>
-                    err ? reject(err) : resolve(stdout))
-            }));
-            if (error_run) {
-                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${error_run}`;
-                should.not.exist(error_run);
+            const { stdout, stderr } = await exec(`node ${path_assignment} ${this.input}`);
+            this.output = stdout;
+            if (stderr) {
+                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${stderr}`;
+                should.not.exist(stderr);
             } else {
                 this.msg_err = `The expected output has NOT been obtained.\n\t\tInput: ${this.input}\n\t\tExpected: ${this.expected}\n\t\tReceived: ${this.output.trim()}`;
                 Utils.search(this.expected, this.output).should.be.equal(true);
@@ -97,14 +72,11 @@ describe("Learning Iterators", function () {
             this.msg_ok = "Obtained the expected output";
             this.input = "two one";
             this.expected = /one.+?two/s;
-            this.output = "";
-            [error_run, this.output] = await to(new Promise((resolve, reject) => {
-                exec(`node ${path_assignment} ${this.input}`, (err, stdout) =>
-                    err ? reject(err) : resolve(stdout))
-            }));
-            if (error_run) {
-                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${error_run}`;
-                should.not.exist(error_run);
+            const { stdout, stderr } = await exec(`node ${path_assignment} ${this.input}`);
+            this.output = stdout;
+            if (stderr) {
+                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${stderr}`;
+                should.not.exist(stderr);
             } else {
                 this.msg_err = `The expected output has NOT been obtained.\n\t\tInput: ${this.input}\n\t\tExpected: ${this.expected}\n\t\tReceived: ${this.output.trim()}`;
                 Utils.search(this.expected, this.output).should.be.equal(true);
@@ -121,14 +93,11 @@ describe("Learning Iterators", function () {
             this.msg_ok = "Obtained the expected output";
             this.input = "two one two";
             this.expected = /one:\s?1.+?two:\s?2/s;
-            this.output = "";
-            [error_run, this.output] = await to(new Promise((resolve, reject) => {
-                exec(`node ${path_assignment} ${this.input}`, (err, stdout) =>
-                    err ? reject(err) : resolve(stdout))
-            }));
-            if (error_run) {
-                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${error_run}`;
-                should.not.exist(error_run);
+            const { stdout, stderr } = await exec(`node ${path_assignment} ${this.input}`);
+            this.output = stdout;
+            if (stderr) {
+                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${stderr}`;
+                should.not.exist(stderr);
             } else {
                 this.msg_err = `The expected output has NOT been obtained.\n\t\tInput: ${this.input}\n\t\tExpected: ${this.expected}\n\t\tReceived: ${this.output.trim()}`;
                 Utils.search(this.expected, this.output).should.be.equal(true);
@@ -145,14 +114,11 @@ describe("Learning Iterators", function () {
             this.msg_ok = "Obtained the expected output";
             this.input = "one two one one three two";
             this.expected = /one:\s?3.+?three:\s?1.+?two:\s?2/s;
-            this.output = "";
-            [error_run, this.output] = await to(new Promise((resolve, reject) => {
-                exec(`node ${path_assignment} ${this.input}`, (err, stdout) =>
-                    err ? reject(err) : resolve(stdout))
-            }));
-            if (error_run) {
-                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${error_run}`;
-                should.not.exist(error_run);
+            const { stdout, stderr } = await exec(`node ${path_assignment} ${this.input}`);
+            this.output = stdout;
+            if (stderr) {
+                this.msg_err = `Error running 'mod2_cmd_iterators.js', Received: ${stderr}`;
+                should.not.exist(stderr);
             } else {
                 this.msg_err = `The expected output has NOT been obtained.\n\t\tInput: ${this.input}\n\t\tExpected: ${this.expected}\n\t\tReceived: ${this.output.trim()}`;
                 Utils.search(this.expected, this.output).should.be.equal(true);
