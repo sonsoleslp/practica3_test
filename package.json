@@ -1,6 +1,6 @@
 {
     "name": "CORE19-03_quiz_cmd",
-    "version": "1.0.0",
+    "version": "0.0.26",
     "description": "CORE19-03_quiz_cmd",
     "main": "main.js",
     "private": true,
